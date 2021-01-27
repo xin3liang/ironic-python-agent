@@ -1,0 +1,4 @@
+---
+fixes:
+  - |
+    Fix failed to get CPU flags on aarch64.
