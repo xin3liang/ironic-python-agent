@@ -974,18 +974,7 @@ class GenericHardwareManager(HardwareManager):
         # Current CPU frequency can be different from maximum one on modern
         # processors
         freq = cpu_info.get('cpu max mhz', cpu_info.get('cpu mhz'))
-
-        flags = []
-        out = utils.try_execute('grep', '-Em1', '^flags', '/proc/cpuinfo')
-        if out:
-            try:
-                # Example output (much longer for a real system):
-                # flags           : fpu vme de pse
-                flags = out[0].strip().split(':', 1)[1].strip().split()
-            except (IndexError, ValueError):
-                LOG.warning('Malformed CPU flags information: %s', out)
-        else:
-            LOG.warning('Failed to get CPU flags')
+        flags = cpu_info.get('flags').split()
 
         return CPU(model_name=cpu_info.get('model name'),
                    frequency=freq,
