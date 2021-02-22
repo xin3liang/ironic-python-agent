@@ -547,7 +547,7 @@ def update_cached_node():
             else:
                 uuid = cached_node['uuid']
             content = API_CLIENT.lookup_node(
-                hardware_info=list_hardware_info(use_cache=True),
+                interfaces=dispatch_to_managers('list_network_interfaces'),
                 timeout=API_LOOKUP_TIMEOUT,
                 starting_interval=API_LOOKUP_INTERVAL,
                 node_uuid=uuid)
