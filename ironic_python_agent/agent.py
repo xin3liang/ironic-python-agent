@@ -424,7 +424,8 @@ class IronicPythonAgent(base.ExecuteCommandMixin):
 
             if self.api_url:
                 content = self.api_client.lookup_node(
-                    hardware_info=hardware.list_hardware_info(use_cache=True),
+                    interfaces=hardware.dispatch_to_managers(
+                        'list_network_interfaces'),
                     timeout=self.lookup_timeout,
                     starting_interval=self.lookup_interval,
                     node_uuid=uuid)

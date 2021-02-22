@@ -132,11 +132,11 @@ class APIClient(object):
             msg = 'Invalid status code: {}'.format(response.status_code)
             raise errors.HeartbeatError(msg)
 
-    def lookup_node(self, hardware_info, timeout, starting_interval,
+    def lookup_node(self, interfaces, timeout, starting_interval,
                     node_uuid=None):
         timer = loopingcall.BackOffLoopingCall(
             self._do_lookup,
-            hardware_info=hardware_info,
+            interfaces=interfaces,
             node_uuid=node_uuid)
         try:
             node_content = timer.start(starting_interval=starting_interval,
@@ -146,14 +146,14 @@ class APIClient(object):
                                          'logs for details.')
         return node_content
 
-    def _do_lookup(self, hardware_info, node_uuid):
+    def _do_lookup(self, interfaces, node_uuid):
         """The actual call to lookup a node.
 
         Should be called as a `loopingcall.BackOffLoopingCall`.
         """
         params = {
             'addresses': ','.join(iface.mac_address
-                                  for iface in hardware_info['interfaces']
+                                  for iface in interfaces
                                   if iface.mac_address)
         }
         if node_uuid:
